@@ -6,9 +6,13 @@ max_jobs: 1
 environment:
   matrix:
     - VCPKG_DEFAULT_TRIPLET: x86-windows
+      CMAKE_GENERATOR: Visual Studio 15 2017
     - VCPKG_DEFAULT_TRIPLET: x86-windows-static
+      CMAKE_GENERATOR: Visual Studio 15 2017
     - VCPKG_DEFAULT_TRIPLET: x64-windows
+      CMAKE_GENERATOR: Visual Studio 15 2017 Win64
     - VCPKG_DEFAULT_TRIPLET: x64-windows-static
+      CMAKE_GENERATOR: Visual Studio 15 2017 Win64
 
 cache:
   - c:\tools\vcpkg\installed
@@ -24,4 +28,6 @@ install:
 build_script:
   - mkdir build
   - cd build
-  - cmake -DCMAKE_TOOLCHAIN_FILE=c:\tools\vcpkg\scripts\buildsystems\vcpkg.cmake %APPVEYOR_BUILD_FOLDER%
+  - cmake -G"%CMAKE_GENERATOR%" -DCMAKE_TOOLCHAIN_FILE=c:\tools\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%VCPKG_DEFAULT_TRIPLET% %APPVEYOR_BUILD_FOLDER%
+  - cmake --build .
+  
